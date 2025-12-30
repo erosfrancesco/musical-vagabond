@@ -90,3 +90,18 @@ Tailwind files:
 - `src/index.css` — imports Tailwind base/components/utilities
 
 If you need to add types for other packages, install `@types/...` and restart the dev server.
+
+## Supabase integration
+
+- **Setup env:** copy `.env.example` to `.env.local` and set your `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
+- **CLI (local via npx):** install deps and use the Supabase CLI without global install:
+
+```bash
+npm install
+npx supabase login
+npx supabase init
+```
+
+- **Scripts:** use `npm run supabase:start` to run services locally, or `npm run supabase:push` to push DB migrations.
+
+The project includes a small client at `src/lib/supabaseClient.ts` that reads `VITE_` env vars.
