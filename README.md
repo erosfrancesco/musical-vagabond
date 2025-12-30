@@ -105,3 +105,32 @@ npx supabase init
 - **Scripts:** use `npm run supabase:start` to run services locally, or `npm run supabase:push` to push DB migrations.
 
 The project includes a small client at `src/lib/supabaseClient.ts` that reads `VITE_` env vars.
+
+## Theme and UI components
+
+This project includes a small theme (white marble color + metallic colors):
+
+- `bg-marble` — soft white "marble" background color
+- `text-primary` / `bg-primary` — primary gold
+- `text-secondary` / `bg-secondary` — secondary silver
+- `text-warning` / `bg-warning` — warning crimson
+
+Example usage in markup:
+
+```jsx
+<div className="bg-marble min-h-screen">
+	<h1 className="text-primary">Gold heading</h1>
+	<p className="text-secondary">Silver caption</p>
+	<button className="bg-warning text-white px-4 py-2 rounded">Warning</button>
+</div>
+```
+
+`src/components/Button.tsx` exports a `Button` component with a `variant` prop:
+
+```tsx
+<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="warning">Warning</Button>
+<Button variant="ghost">Ghost</Button>
+```
+
