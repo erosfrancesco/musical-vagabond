@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import Button from "./Button";
 import Card from "./Card";
+import useSupabaseUser from "./useSupabaseUser";
 
 type Associazioni = {
   codice_fiscale: string;
@@ -18,13 +19,16 @@ type AssociazioniParsed = Pick<Associazioni, "codice_fiscale" | "name" | "descri
 };
 
 export function SupabaseTest() {
+  const [loading, setLoading] = useState(false);
   const [associazioni, setAssociazioni] = useState<AssociazioniParsed[]>([]);
+  const { isLogged } = useSupabaseUser();
 
   useEffect(() => {
     getAssociazioni();
-  }, []);
+  }, [isLogged]);
 
   async function getAssociazioni() {
+    setLoading(true);
     const { data } = await supabase.from("associazioni").select();
 
     const parsedData = (data as Associazioni[]).map(item => ({
@@ -33,9 +37,17 @@ export function SupabaseTest() {
       updated_at: new Date(item.updated_at)
     }));
 
+    setLoading(false);
     setAssociazioni(parsedData);
   }
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (associazioni.length === 0) {
+    return null;
+  }
 
 
   return (
