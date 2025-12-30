@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* Preserve a few global styles from the template */
 body {
   margin: 0;
@@ -15,4 +16,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.card-elevated {
+  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.6);
 }

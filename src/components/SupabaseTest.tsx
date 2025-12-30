@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import Button from "./Button";
+import Card from "./Card";
 
 type Associazioni = {
   codice_fiscale: string;
@@ -11,8 +12,13 @@ type Associazioni = {
   updated_at: string;
 }
 
+type AssociazioniParsed = Pick<Associazioni, "codice_fiscale" | "name" | "description" | "n_codice"> & {
+  created_at: Date;
+  updated_at: Date;
+};
+
 export function SupabaseTest() {
-  const [associazioni, setAssociazioni] = useState<Associazioni[]>([]);
+  const [associazioni, setAssociazioni] = useState<AssociazioniParsed[]>([]);
 
   useEffect(() => {
     getAssociazioni();
@@ -20,17 +26,28 @@ export function SupabaseTest() {
 
   async function getAssociazioni() {
     const { data } = await supabase.from("associazioni").select();
-    const associazioniData = data as Associazioni[];
-    setAssociazioni(associazioniData);
+
+    const parsedData = (data as Associazioni[]).map(item => ({
+      ...item,
+      created_at: new Date(item.created_at),
+      updated_at: new Date(item.updated_at)
+    }));
+
+    setAssociazioni(parsedData);
   }
 
   return (
     <ul>
       {associazioni.map((associazione, i) => (
         <li key={i}>
-          <p>{associazione.name}: {associazione.codice_fiscale} (N. Codice: {associazione.n_codice})</p>
-          <p>{associazione.description}</p>
-          <Button>Edit</Button>
+          <Card title={associazione.name} subtitle={associazione.description} actions={
+            <Button>Edit</Button>
+          }>
+            <p>{associazione.codice_fiscale}</p>
+            <p>N. Codice: {associazione.n_codice}</p>
+            <p>Creata il: {associazione.created_at.toLocaleDateString()}</p>
+            <p>Ultima modifica il: {associazione.updated_at.toLocaleDateString()}</p>
+          </Card>
         </li>
       ))}
     </ul>
