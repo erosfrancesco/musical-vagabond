@@ -68,3 +68,25 @@ This section has moved here: [https://vitejs.dev/guide/build.html](https://vitej
 ### Troubleshooting
 
 This section has moved here: [https://vitejs.dev/guide/troubleshooting.html](https://vitejs.dev/guide/troubleshooting.html)
+
+## TypeScript + Tailwind
+
+This project is configured to use TypeScript and Tailwind CSS. To install dependencies and run locally:
+
+```bash
+npm install
+npm run dev
+```
+
+Rebuild after changing configs with:
+
+```bash
+npm run build
+```
+
+Tailwind files:
+- `tailwind.config.cjs` — content paths for Vite
+- `postcss.config.cjs` — PostCSS setup
+- `src/index.css` — imports Tailwind base/components/utilities
+
+If you need to add types for other packages, install `@types/...` and restart the dev server.
