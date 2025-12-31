@@ -1,9 +1,10 @@
-import useAssociazioni from '../hooks/useAssociazioni';
+import useAssociazioni, { useNewAssociazione } from '../hooks/useAssociazioni';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Input from '../components/Input';
+import Modal from '../components/Modal';
 
 export default function Associazioni(): JSX.Element {
   const { data, isLoading } = useAssociazioni();
@@ -12,6 +13,9 @@ export default function Associazioni(): JSX.Element {
   // Filtri
   const [searchTerm, setSearchTerm] = useState<string>('');
 
+  // Modal
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -19,9 +23,6 @@ export default function Associazioni(): JSX.Element {
   if (!data || data.length === 0) {
     return <></>;
   }
-
-
-  // TODO: - Form to create new association page
 
   const filteredAssociazioni = searchTerm !== '' ? data.filter((associazione) =>
     associazione.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -40,11 +41,13 @@ export default function Associazioni(): JSX.Element {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <Button onClick={() => {
-          // TODO: - Open modal
+          setIsModalOpen(true);
         }}>
           + Nuova Associazione
         </Button>
       </div>
+
+      <NewAssociazioneModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
 
       <ul>
         {filteredAssociazioni.map((associazione, i) => (
@@ -55,14 +58,13 @@ export default function Associazioni(): JSX.Element {
                 <Button onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  console.log('Clicked on edit');
+                  //  TODO: - Edit modal
                 }}>
                   Edit
                 </Button>
               }
               onClick={() => {
                 navigate(`/${associazione.codice_fiscale}`);
-                console.log(`Clicked on associazione: ${associazione.codice_fiscale}`);
               }}>
               <p>{associazione.codice_fiscale}</p>
               <p>N. Codice: {associazione.n_codice}</p>
@@ -74,4 +76,70 @@ export default function Associazioni(): JSX.Element {
       </ul>
     </div>
   );
+}
+
+
+function NewAssociazioneModal({ isModalOpen, setIsModalOpen }: { isModalOpen: boolean; setIsModalOpen: (open: boolean) => void }) {
+  const { mutate: createNewAssociazione } = useNewAssociazione();
+
+  const [newName, setNewName] = useState<string>('');
+  const [newCodice, setNewCodice] = useState<string>('');
+  const [newNcode, setNewNcode] = useState<number | undefined>(undefined);
+  const [newDescription, setNewDescription] = useState<string>('');
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      setNewName('');
+      setNewCodice('');
+      setNewNcode(undefined);
+      setNewDescription('');
+    }
+  }, [isModalOpen]);
+
+  return <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Nuova Associazione">
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      const payload = {
+        name: newName,
+        codice_fiscale: newCodice,
+        n_codice: newNcode,
+        description: newDescription
+      };
+      createNewAssociazione(payload, {
+        onSettled: () => {
+          setIsModalOpen(false);
+        }
+      });
+    }}>
+      <div className="space-y-3">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Nome</label>
+          <Input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Nome associazione" />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Codice Fiscale</label>
+          <Input type="text" value={newCodice} onChange={(e) => setNewCodice(e.target.value)} placeholder="Codice fiscale" />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">N. Codice</label>
+          <Input type="number" placeholder="N. Codice"
+            value={newNcode !== undefined ? newNcode : ''}
+            onChange={(e) => setNewNcode(e.target.value ? parseInt(e.target.value) : undefined)}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Descrizione</label>
+          <textarea className="w-full border rounded p-2" rows={4} value={newDescription} onChange={(e) => setNewDescription(e.target.value)} />
+        </div>
+
+        <div className="flex justify-end gap-2">
+          <Button type="button" onClick={() => setIsModalOpen(false)}>Annulla</Button>
+          <Button type="submit">Crea</Button>
+        </div>
+      </div>
+    </form>
+  </Modal>
 }

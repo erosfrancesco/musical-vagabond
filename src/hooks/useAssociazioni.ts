@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient, UseQueryResult } from '@tanstack/react-query';
 import { supabase } from '../lib/supabaseClient';
 
 export type Associazione = {
@@ -32,5 +32,27 @@ export default function useAssociazioni(): UseQueryResult<AssociazioneParsed[], 
 
             return parsed;
         }
+    });
+}
+
+
+export function useNewAssociazione() {
+    const queryClient = useQueryClient();
+
+    const createAssociazione = async (associazione: Omit<Associazione, 'created_at' | 'updated_at'>) => {
+        const { data, error } = await supabase.from('associazioni').insert([associazione]);
+
+        if (error) {
+            throw error;
+        }
+
+        return data;
+    };
+
+    return useMutation({
+        mutationFn: createAssociazione,
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ['associazioni'] })
+        },
     });
 }
