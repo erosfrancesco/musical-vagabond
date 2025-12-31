@@ -4,6 +4,10 @@ export default function RendicontoAssociazione(): JSX.Element {
   const params = useParams();
   const codice = params.associazioneCodiceFiscale;
 
+  // TODO: - Supabase Hook to fetch association data
+  // TODO: - Form to create new rendiconto
+  // TODO: - Export
+
   return (
     <div className="min-h-screen bg-marble flex flex-col items-center justify-center text-gray-900 p-4">
       <h1 className="text-2xl font-semibold">Associazione</h1>

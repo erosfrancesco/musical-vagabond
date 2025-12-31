@@ -21,6 +21,7 @@ function App(): JSX.Element {
         );
     }
 
+    // TODO: - Replace Home with icon
     return (
         <QueryClientProvider client={queryClient}>
             <nav className="p-4">
