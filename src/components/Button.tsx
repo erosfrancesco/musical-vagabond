@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes } from 'react';
 
 type Variant = 'primary' | 'secondary' | 'warning' | 'ghost';
 
