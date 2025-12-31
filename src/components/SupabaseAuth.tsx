@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import Button from "./Button";
 import Card from "./Card";
-import useSupabaseUser from "./useSupabaseUser";
+import useSupabaseUser from "../hooks/useSupabaseUser";
 
 
 export function SupabaseAuth() {

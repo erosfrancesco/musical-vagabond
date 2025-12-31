@@ -1,6 +1,6 @@
 import Button from "./Button";
 import Card from "./Card";
-import useSupabaseUser from "./useSupabaseUser";
+import useSupabaseUser from "../hooks/useSupabaseUser";
 import useAssociazioni from "../hooks/useAssociazioni";
 
 export function SupabaseTest() {
