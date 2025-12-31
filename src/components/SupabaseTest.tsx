@@ -1,11 +1,9 @@
 import Button from "./Button";
 import Card from "./Card";
-import useSupabaseUser from "../hooks/useSupabaseUser";
 import useAssociazioni from "../hooks/useAssociazioni";
 
 export function SupabaseTest() {
   const { data, isLoading } = useAssociazioni();
-  // const { isLogged } = useSupabaseUser();
 
   if (isLoading) {
     return <p>Loading...</p>;
