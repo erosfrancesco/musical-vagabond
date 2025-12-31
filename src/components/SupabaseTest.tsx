@@ -1,60 +1,25 @@
-import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabaseClient";
 import Button from "./Button";
 import Card from "./Card";
 import useSupabaseUser from "./useSupabaseUser";
-
-type Associazioni = {
-  codice_fiscale: string;
-  name: string;
-  description: string;
-  n_codice: number;
-  created_at: string;
-  updated_at: string;
-}
-
-type AssociazioniParsed = Pick<Associazioni, "codice_fiscale" | "name" | "description" | "n_codice"> & {
-  created_at: Date;
-  updated_at: Date;
-};
+import useAssociazioni from "../hooks/useAssociazioni";
 
 export function SupabaseTest() {
-  const [loading, setLoading] = useState(false);
-  const [associazioni, setAssociazioni] = useState<AssociazioniParsed[]>([]);
-  const { isLogged } = useSupabaseUser();
+  const { data, isLoading } = useAssociazioni();
+  // const { isLogged } = useSupabaseUser();
 
-  useEffect(() => {
-    getAssociazioni();
-  }, [isLogged]);
-
-  async function getAssociazioni() {
-    setLoading(true);
-    const { data } = await supabase.from("associazioni").select();
-
-    const parsedData = (data as Associazioni[]).map(item => ({
-      ...item,
-      created_at: new Date(item.created_at),
-      updated_at: new Date(item.updated_at)
-    }));
-
-    setLoading(false);
-    setAssociazioni(parsedData);
-  }
-
-  if (loading) {
+  if (isLoading) {
     return <p>Loading...</p>;
   }
 
-  if (associazioni.length === 0) {
+  if (!data || data.length === 0) {
     return null;
   }
-
 
   return (
     <div>
       <h2 className="mt-4">Associazioni</h2>
       <ul>
-        {associazioni.map((associazione, i) => (
+        {data.map((associazione, i) => (
           <li key={i}>
             <Card title={associazione.name} subtitle={associazione.description} actions={
               <Button>Edit</Button>
