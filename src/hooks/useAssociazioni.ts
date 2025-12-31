@@ -56,3 +56,22 @@ export function useNewAssociazione() {
         },
     });
 }
+
+export function useUpdateAssociazione() {
+    const queryClient = useQueryClient();
+
+    const updateAssociazione = async (payload: { codice_fiscale: string } & Partial<Associazione>) => {
+        const { codice_fiscale, ...patch } = payload;
+        const { data, error } = await supabase.from('associazioni').update(patch).eq('codice_fiscale', codice_fiscale);
+
+        if (error) throw error;
+        return data;
+    };
+
+    return useMutation({
+        mutationFn: updateAssociazione,
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ['associazioni'] });
+        }
+    });
+}
