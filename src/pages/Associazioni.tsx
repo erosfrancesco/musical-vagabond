@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Modal from '../components/Modal';
 import Table, { Column } from '../components/Table';
+import { EditAssociazioneModal, NewAssociazioneModal } from './AssociazioniModals';
 
 export default function Associazioni(): JSX.Element {
   const { data, isLoading } = useAssociazioni();
@@ -58,8 +59,6 @@ export default function Associazioni(): JSX.Element {
         </Button>
       </div>
 
-      <NewAssociazioneModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
-
       <Table
         columns={columns}
         data={filteredAssociazioni}
@@ -71,145 +70,8 @@ export default function Associazioni(): JSX.Element {
         )}
       />
 
+      <NewAssociazioneModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
       <EditAssociazioneModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} associazione={editing} />
     </div>
-  );
-}
-
-
-function NewAssociazioneModal({ isModalOpen, setIsModalOpen }: { isModalOpen: boolean; setIsModalOpen: (open: boolean) => void }) {
-  const { mutate: createNewAssociazione } = useNewAssociazione();
-
-  const [newName, setNewName] = useState<string>('');
-  const [newCodice, setNewCodice] = useState<string>('');
-  const [newNcode, setNewNcode] = useState<number | undefined>(undefined);
-  const [newDescription, setNewDescription] = useState<string>('');
-
-  useEffect(() => {
-    if (!isModalOpen) {
-      setNewName('');
-      setNewCodice('');
-      setNewNcode(undefined);
-      setNewDescription('');
-    }
-  }, [isModalOpen]);
-
-  return <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Nuova Associazione">
-    <form onSubmit={(e) => {
-      e.preventDefault();
-      const payload = {
-        name: newName,
-        codice_fiscale: newCodice,
-        n_codice: newNcode,
-        description: newDescription
-      };
-      createNewAssociazione(payload, {
-        onSettled: () => {
-          setIsModalOpen(false);
-        }
-      });
-    }}>
-      <div className="space-y-3">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Nome</label>
-          <Input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Nome associazione" />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Codice Fiscale</label>
-          <Input type="text" value={newCodice} onChange={(e) => setNewCodice(e.target.value)} placeholder="Codice fiscale" />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">N. Codice</label>
-          <Input type="number" placeholder="N. Codice"
-            value={newNcode !== undefined ? newNcode : ''}
-            onChange={(e) => setNewNcode(e.target.value ? parseInt(e.target.value) : undefined)}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Descrizione</label>
-          <textarea className="w-full border rounded p-2" rows={4} value={newDescription} onChange={(e) => setNewDescription(e.target.value)} />
-        </div>
-
-        <div className="flex justify-end gap-2">
-          <Button type="button" onClick={() => setIsModalOpen(false)}>Annulla</Button>
-          <Button type="submit">Crea</Button>
-        </div>
-      </div>
-    </form>
-  </Modal>
-}
-
-
-function EditAssociazioneModal({ isOpen, setIsOpen, associazione }: { isOpen: boolean; setIsOpen: (v: boolean) => void; associazione: any | null }) {
-  const { mutate: updateAssociazione, isPending } = useUpdateAssociazione();
-
-  const [name, setName] = useState<string>('');
-  const [ncode, setNcode] = useState<number | undefined>(undefined);
-  const [description, setDescription] = useState<string>('');
-
-  useEffect(() => {
-    if (associazione) {
-      setName(associazione.name ?? '');
-      setNcode(associazione.n_codice ?? undefined);
-      setDescription(associazione.description ?? '');
-    } else {
-      setName('');
-      setNcode(undefined);
-      setDescription('');
-    }
-  }, [associazione]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      setName('');
-      setNcode(undefined);
-      setDescription('');
-    }
-  }, [isOpen]);
-
-  if (!associazione) return null;
-
-  return (
-    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={`Modifica: ${associazione.name}`}>
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        const payload = {
-          name,
-          n_codice: ncode,
-          description
-        };
-        updateAssociazione({ codice_fiscale: associazione.codice_fiscale, ...payload }, {
-          onSettled: () => setIsOpen(false)
-        });
-      }}>
-        <div className="space-y-3">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Nome</label>
-            <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome associazione" />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">N. Codice</label>
-            <Input type="number" placeholder="N. Codice"
-              value={ncode !== undefined ? ncode : ''}
-              onChange={(e) => setNcode(e.target.value ? parseInt(e.target.value) : undefined)}
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Descrizione</label>
-            <textarea className="w-full border rounded p-2" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} />
-          </div>
-
-          <div className="flex justify-end gap-2">
-            <Button type="button" onClick={() => setIsOpen(false)}>Annulla</Button>
-            <Button type="submit" disabled={isPending}>{isPending ? 'Salvando...' : 'Salva'}</Button>
-          </div>
-        </div>
-      </form>
-    </Modal>
   );
 }
