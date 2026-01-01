@@ -60,7 +60,7 @@ export function useNewAssociazione() {
 export function useUpdateAssociazione() {
     const queryClient = useQueryClient();
 
-    const updateAssociazione = async (payload: { codice_fiscale: string } & Partial<Associazione>) => {
+    const updateAssociazione = async (payload: { codice_fiscale: Associazione["codice_fiscale"] } & Partial<Associazione>) => {
         const { codice_fiscale, ...patch } = payload;
         const { data, error } = await supabase.from('associazioni').update(patch).eq('codice_fiscale', codice_fiscale);
 

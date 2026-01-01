@@ -63,12 +63,11 @@ export default function useAssociazioneRendiconto(codice_fiscale: string): UseQu
 }
 
 
-/*
-export function useNewAssociazione() {
+export function useNewAssociazieRendiconto() {
     const queryClient = useQueryClient();
 
-    const createAssociazione = async (associazione: Omit<Associazione, 'created_at' | 'updated_at'>) => {
-        const { data, error } = await supabase.from('associazioni').insert([associazione]);
+    const createAssociazioneRendiconto = async (rendiconto: Omit<AssociazioneRendiconto, 'created_at' | 'updated_at'>) => {
+        const { data, error } = await supabase.from('associazione_resoconti').insert([rendiconto]);
 
         if (error) {
             throw error;
@@ -78,29 +77,30 @@ export function useNewAssociazione() {
     };
 
     return useMutation({
-        mutationFn: createAssociazione,
+        mutationFn: createAssociazioneRendiconto,
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ['associazioni'] })
+            await queryClient.invalidateQueries({ queryKey: ['associazione_resoconti'] })
         },
     });
 }
 
-export function useUpdateAssociazione() {
+
+export function useUpdateRendiconto() {
     const queryClient = useQueryClient();
 
-    const updateAssociazione = async (payload: { codice_fiscale: string } & Partial<Associazione>) => {
-        const { codice_fiscale, ...patch } = payload;
-        const { data, error } = await supabase.from('associazioni').update(patch).eq('codice_fiscale', codice_fiscale);
+    const updateRendiconto = async (payload: { id: AssociazioneRendiconto["id"] } & Partial<AssociazioneRendiconto>) => {
+        const { id, ...patch } = payload;
+        const { data, error } = await supabase.from('associazione_resoconti').update(patch).eq('id', id);
 
         if (error) throw error;
+
         return data;
     };
 
     return useMutation({
-        mutationFn: updateAssociazione,
+        mutationFn: updateRendiconto,
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ['associazioni'] });
+            await queryClient.invalidateQueries({ queryKey: ['associazione_resoconti'] });
         }
     });
 }
-/** */
