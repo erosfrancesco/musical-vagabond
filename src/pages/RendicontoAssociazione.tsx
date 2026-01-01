@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import Card from '../components/Card';
 import useAssociazioni from '../hooks/useAssociazioni';
-import useAssociazioneRendiconto from '../hooks/useAssociazioneRendiconto';
+import useAssociazioneRendiconto from '../hooks/useRendiconto';
 import Table, { Column } from '../components/Table';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
@@ -15,17 +15,18 @@ export default function RendicontoAssociazione(): JSX.Element {
   const { data: associazioni } = useAssociazioni();
   const associazione = associazioni?.find(a => a.codice_fiscale === codice);
 
-  // edit modal
+  // Modal
   const [isRendEditOpen, setIsRendEditOpen] = useState<boolean>(false);
   const [editingRend, setEditingRend] = useState<any | null>(null);
-  const [selectedAssociazione, setSelectedAssociazione] = useState<string>(codice || associazioni?.[0]?.codice_fiscale || '');
 
   if (!associazione) {
     return <p>Associazione non trovata.</p>;
   }
 
-  // TODO: - Form to create new rendiconto
+  // TODO: - Form to create edit rendiconto
   // TODO: - Export
+
+  console.log(data);
 
   const columns: Column<any>[] = [
     { key: 'id', header: 'ID', render: (r) => r.id },
@@ -68,7 +69,7 @@ export default function RendicontoAssociazione(): JSX.Element {
         )}
       </div>
 
-      <NewRendicontoModal isOpen={isRendEditOpen} setIsOpen={setIsRendEditOpen} />
+      <NewRendicontoModal isOpen={isRendEditOpen} setIsOpen={setIsRendEditOpen} codice_fiscale={codice!} />
       <EditRendicontoModal isOpen={isRendEditOpen} setIsOpen={setIsRendEditOpen} rendiconto={editingRend} />
     </div>
   );

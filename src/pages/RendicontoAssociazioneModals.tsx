@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Modal from "../components/Modal";
-import { useNewAssociazione, useUpdateAssociazione } from "../hooks/useAssociazioni";
-import { AssociazioneRendiconto, AssociazioneRendicontoParsed, AvailableRendicontoPaymentsTypes, AvailableRendicontoTypes } from "../hooks/useAssociazioneRendiconto";
+import { AssociazioneRendiconto, AssociazioneRendicontoParsed, AvailableRendicontoPaymentsTypes, AvailableRendicontoTypes, PaymentTypesEnum, RendicontoTypesEnum, useNewRendiconto, useUpdateRendiconto } from "../hooks/useRendiconto";
 import Select from "../components/Select";
+import { Associazione } from "../hooks/useAssociazioni";
 
 type ModalProps = {
     isOpen: boolean;
@@ -12,8 +12,8 @@ type ModalProps = {
 }
 
 
-export function NewRendicontoModal({ isOpen, setIsOpen }: ModalProps) {
-    const { mutate: createNewAssociazione } = useNewAssociazione();
+export function NewRendicontoModal({ isOpen, setIsOpen, codice_fiscale }: ModalProps & { codice_fiscale: Associazione["codice_fiscale"] }) {
+    const { mutate: createNewRendiconto } = useNewRendiconto();
     const {
         reset, type, setType, paymentType, setPaymentType, value, setValue
     } = useEditRendiconto();
@@ -27,15 +27,23 @@ export function NewRendicontoModal({ isOpen, setIsOpen }: ModalProps) {
     return <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Nuova spesa">
         <form onSubmit={(e) => {
             e.preventDefault();
-            /*
-            const payload = {
-                name,
-                codice_fiscale: codiceFiscale,
-                n_codice: ncode,
-                description
+
+            // TODO: - Check the select
+            const payloadType = (AvailableRendicontoTypes.find(t => t.value === type) || AvailableRendicontoTypes[0]).value;
+            const payloadPaymentType = (AvailableRendicontoPaymentsTypes.find(pt => pt.value === paymentType) || AvailableRendicontoPaymentsTypes[0]).value;
+            const payloadValue = value!;
+
+            const payload: Omit<AssociazioneRendiconto, "id"> = {
+                type: payloadType,
+                payment_type: payloadPaymentType,
+                value: payloadValue,
+                codice_fiscale
             };
 
-            createNewAssociazione(payload, {
+            console.log('Creating rendiconto with payload:', payload, type, paymentType);
+
+            /*
+            createNewRendiconto(payload, {
                 onSettled: () => {
                     setIsOpen(false);
                 }
@@ -49,11 +57,11 @@ export function NewRendicontoModal({ isOpen, setIsOpen }: ModalProps) {
                 </div>
             </ModifyRendicontoContent>
         </form>
-    </Modal>
+    </Modal >
 }
 
 export function EditRendicontoModal({ isOpen, setIsOpen, rendiconto }: ModalProps & { rendiconto: AssociazioneRendicontoParsed | null }) {
-    const { mutate: updateAssociazione, isPending } = useUpdateAssociazione();
+    const { mutate: updateRendiconto, isPending } = useUpdateRendiconto();
 
     const {
         type, setType, paymentType, setPaymentType, value, setValue,
@@ -106,11 +114,11 @@ function ModifyRendicontoContent({
     type, setType, paymentType, setPaymentType, value, setValue,
     children
 }: {
-    type: AssociazioneRendiconto["type"] | undefined;
-    setType: (type: string) => void;
-    paymentType: AssociazioneRendiconto["payment_type"] | undefined;
-    setPaymentType: (paymentType: string) => void;
-    value: AssociazioneRendiconto["value"] | undefined;
+    type: AssociazioneRendicontoParsed["type"] | undefined;
+    setType: (type: AssociazioneRendicontoParsed["type"]) => void;
+    paymentType: AssociazioneRendicontoParsed["payment_type"] | undefined;
+    setPaymentType: (paymentType: AssociazioneRendicontoParsed["payment_type"]) => void;
+    value: AssociazioneRendicontoParsed["value"] | undefined;
     setValue: (value: number) => void;
     children?: React.ReactNode;
 }) {
@@ -123,7 +131,7 @@ function ModifyRendicontoContent({
             <Select
                 options={AvailableRendicontoTypes}
                 value={type}
-                onChange={(e) => setType(e.target.value)}
+                onChange={(e) => setType(e.target.value as AssociazioneRendicontoParsed["type"])}
             />
         </div>
 
@@ -132,7 +140,7 @@ function ModifyRendicontoContent({
             <Select
                 options={AvailableRendicontoPaymentsTypes}
                 value={paymentType}
-                onChange={(e) => setPaymentType(e.target.value)}
+                onChange={(e) => setPaymentType(e.target.value as AssociazioneRendicontoParsed["payment_type"])}
             />
         </div>
 
@@ -149,10 +157,10 @@ function ModifyRendicontoContent({
 }
 
 function useEditRendiconto() {
-    const [codiceFiscale, setCodiceFiscale] = useState<AssociazioneRendiconto["codice_fiscale"] | undefined>(undefined);
-    const [type, setType] = useState<AssociazioneRendiconto["type"] | undefined>(undefined);
-    const [paymentType, setPaymentType] = useState<AssociazioneRendiconto["payment_type"] | undefined>(undefined);
-    const [value, setValue] = useState<AssociazioneRendiconto["value"] | undefined>(undefined);
+    const [codiceFiscale, setCodiceFiscale] = useState<AssociazioneRendicontoParsed["codice_fiscale"] | undefined>(undefined);
+    const [type, setType] = useState<AssociazioneRendicontoParsed["type"] | undefined>(undefined);
+    const [paymentType, setPaymentType] = useState<AssociazioneRendicontoParsed["payment_type"] | undefined>(undefined);
+    const [value, setValue] = useState<AssociazioneRendicontoParsed["value"] | undefined>(undefined);
 
     const reset = () => {
         setCodiceFiscale(undefined);
