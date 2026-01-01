@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient, UseQueryResult } from '@tanstack
 import { supabase } from '../lib/supabaseClient';
 
 export type Associazione = {
-    codice_fiscale?: string;
+    codice_fiscale: string;
     name?: string;
     description?: string;
     n_codice?: number;

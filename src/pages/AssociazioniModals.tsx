@@ -26,9 +26,12 @@ export function NewAssociazioneModal({ isOpen, setIsOpen }: ModalProps) {
     return <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Nuova Associazione">
         <form onSubmit={(e) => {
             e.preventDefault();
+
+            // TODO: - Validation for codiceFiscale uniqueness
+
             const payload = {
                 name,
-                codice_fiscale: codiceFiscale,
+                codice_fiscale: codiceFiscale!,
                 n_codice: ncode,
                 description
             };
@@ -78,7 +81,7 @@ export function EditAssociazioneModal({ isOpen, setIsOpen, associazione }: Modal
                     description
                 };
                 updateAssociazione({
-                    codice_fiscale: associazione.codice_fiscale,
+                    codice_fiscale: associazione.codice_fiscale!,
                     ...payload
                 }, {
                     onSettled: () => setIsOpen(false)
@@ -154,7 +157,7 @@ function useEditAssociazione() {
     const [name, setName] = useState<Associazione["name"]>(undefined);
     const [ncode, setNcode] = useState<Associazione["n_codice"]>(undefined);
     const [description, setDescription] = useState<Associazione["description"]>(undefined);
-    const [codiceFiscale, setCodiceFiscale] = useState<Associazione["codice_fiscale"]>(undefined);
+    const [codiceFiscale, setCodiceFiscale] = useState<Associazione["codice_fiscale"] | undefined>(undefined);
 
     const reset = () => {
         setName(undefined);
