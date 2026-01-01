@@ -28,9 +28,8 @@ export function NewRendicontoModal({ isOpen, setIsOpen, codice_fiscale }: ModalP
         <form onSubmit={(e) => {
             e.preventDefault();
 
-            // TODO: - Check the select
-            const payloadType = (AvailableRendicontoTypes.find(t => t.value === type) || AvailableRendicontoTypes[0]).value;
-            const payloadPaymentType = (AvailableRendicontoPaymentsTypes.find(pt => pt.value === paymentType) || AvailableRendicontoPaymentsTypes[0]).value;
+            const payloadType = type || AvailableRendicontoTypes[0].value;
+            const payloadPaymentType = paymentType || AvailableRendicontoPaymentsTypes[0].value;
             const payloadValue = value!;
 
             const payload: Omit<AssociazioneRendiconto, "id"> = {
@@ -40,15 +39,11 @@ export function NewRendicontoModal({ isOpen, setIsOpen, codice_fiscale }: ModalP
                 codice_fiscale
             };
 
-            console.log('Creating rendiconto with payload:', payload, type, paymentType);
-
-            /*
             createNewRendiconto(payload, {
                 onSettled: () => {
                     setIsOpen(false);
                 }
             });
-            /** */
         }}>
             <ModifyRendicontoContent type={type} setType={setType} paymentType={paymentType} setPaymentType={setPaymentType} value={value} setValue={setValue}>
                 <div className="flex justify-end gap-2">
@@ -84,19 +79,17 @@ export function EditRendicontoModal({ isOpen, setIsOpen, rendiconto }: ModalProp
         <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={`Modifica: ${rendiconto.id}`}>
             <form onSubmit={(e) => {
                 e.preventDefault();
-                /*
+
                 const payload = {
-                    name,
-                    n_codice: ncode,
-                    description
+                    ...rendiconto,
+                    type: type!,
+                    payment_type: paymentType!,
+                    value: value!
                 };
-                updateAssociazione({
-                    codice_fiscale: associazione.codice_fiscale,
-                    ...payload
-                }, {
+
+                updateRendiconto(payload, {
                     onSettled: () => setIsOpen(false)
                 });
-                /** */
             }}>
                 <ModifyRendicontoContent type={type} setType={setType} paymentType={paymentType} setPaymentType={setPaymentType} value={value} setValue={setValue}>
                     <div className="flex justify-end gap-2">
@@ -147,6 +140,7 @@ function ModifyRendicontoContent({
         <div>
             <label className="block text-sm font-medium text-gray-700">Valore (€)</label>
             <Input type="number" placeholder="Value"
+                required step={0.01}
                 value={value}
                 onChange={(e) => setValue(e.target.value ? parseFloat(e.target.value) : 0)}
             />

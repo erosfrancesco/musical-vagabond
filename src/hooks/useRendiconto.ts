@@ -66,8 +66,8 @@ export type AssociazioneRendiconto = {
 
 export type AssociazioneRendicontoParsed = Pick<AssociazioneRendiconto, "id" | "codice_fiscale" | "value"> & {
 
-    payment_type: PaymentTypesEnum;
-    type: RendicontoTypesEnum;
+    payment_type: keyof typeof PaymentTypesEnum;
+    type: keyof typeof RendicontoTypesEnum;
 
     created_at: Date;
     updated_at: Date;
@@ -78,7 +78,10 @@ export default function useAssociazioneRendiconto(codice_fiscale: string): UseQu
     return useQuery<AssociazioneRendicontoParsed[], Error>({
         queryKey: ['associazione_resoconti', codice_fiscale],
         queryFn: async () => {
-            const { data, error } = await supabase.from('associazione_resoconti').select('*').eq('codice_fiscale', codice_fiscale);
+            const { data, error } = await supabase.from('associazione_resoconti')
+                .select('*')
+                .eq('codice_fiscale', codice_fiscale)
+                .order('created_at', { ascending: false });
 
             if (error) throw error;
 
@@ -91,8 +94,8 @@ export default function useAssociazioneRendiconto(codice_fiscale: string): UseQu
                 return {
                     ...item,
 
-                    payment_type: paymentType?.label,
-                    type: parsedType?.label,
+                    payment_type: paymentType?.value,
+                    type: parsedType?.value,
 
                     created_at: item.created_at ? new Date(item.created_at) : new Date(),
                     updated_at: item.updated_at ? new Date(item.updated_at) : new Date()
@@ -130,7 +133,7 @@ export function useNewRendiconto() {
 export function useUpdateRendiconto() {
     const queryClient = useQueryClient();
 
-    const updateRendiconto = async (payload: { id: AssociazioneRendiconto["id"] } & Partial<AssociazioneRendiconto>) => {
+    const updateRendiconto = async (payload: { id: AssociazioneRendiconto["id"] } & Omit<AssociazioneRendiconto, 'codice_fiscale' | 'created_at' | 'updated_at' | 'id'>) => {
         const { id, ...patch } = payload;
         const { data, error } = await supabase.from('associazione_resoconti').update(patch).eq('id', id);
 

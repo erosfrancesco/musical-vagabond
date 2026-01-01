@@ -44,11 +44,10 @@ export default function Associazioni(): JSX.Element {
   ];
 
   return (
-    <div className="p-4">
-      <h2 className="text-lg text-primary font-bold mb-2">Associazioni</h2>
-
-      <div className='my-4 flex'>
+    <div className="p-4 bg-marble flex flex-col text-gray-900 p-4">
+      <div className='my-4 flex w-full max-w-2xl'>
         <Input type="text" placeholder="Cerca..."
+          className="mr-4 w-full flex-1 max-w-sm"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

@@ -21,11 +21,11 @@ function App(): JSX.Element {
         );
     }
 
-    // TODO: - Replace Home with icon
+    // TODO: - Replace Associazioni with icon
     return (
         <QueryClientProvider client={queryClient}>
             <nav className="p-4">
-                <Link to="/" className="text-blue-600">Home</Link>
+                <Link to="/" className="text-blue-600">Associazioni</Link>
             </nav>
             <Routes>
                 <Route path="/" element={<Associazioni />} />
