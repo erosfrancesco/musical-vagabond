@@ -3,7 +3,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import Modal from "../components/Modal";
 import { useNewAssociazione, useUpdateAssociazione } from "../hooks/useAssociazioni";
-import { AssociazioneRendiconto, AssociazioneRendicontoParsed } from "../hooks/useAssociazioneRendiconto";
+import { AssociazioneRendiconto, AssociazioneRendicontoParsed, AvailableRendicontoPaymentsTypes, AvailableRendicontoTypes } from "../hooks/useAssociazioneRendiconto";
 import Select from "../components/Select";
 
 type ModalProps = {
@@ -115,36 +115,13 @@ function ModifyRendicontoContent({
     children?: React.ReactNode;
 }) {
 
-    const typeOptions = [
-        { value: 'assegno', label: 'Assegno/Banca' },
-        { value: 'carta', label: 'Carta di credito' },
-        { value: 'contante', label: 'Contante' },
-    ];
-
-    const paymentTypeOptions = [
-        { value: 'a', label: 'Attrezzature sociali' },
-        { value: 'b', label: 'Beni materiali sociali' },
-        { value: 'c', label: 'Canoni e utenze' },
-        { value: 'd', label: 'Donazioni a terzi' },
-        { value: 'e', label: 'Erogazioni compensi collaborazione a soci' },
-        { value: 'g', label: 'Giochi e didattica' },
-        { value: 'i', label: 'Imposte' },
-        { value: 'l', label: 'Liberalità da terzi' },
-        { value: 'm', label: 'Manutenzione' },
-        { value: 'p', label: 'Pulizia e igiene' },
-        { value: 'q', label: 'Quote sociali' },
-        { value: 'r', label: 'Rimborsi spese terzi' },
-        { value: 's', label: 'Sottoscrizioni ed anticipazioni da soci' },
-        { value: 't', label: 'Transporti' },
-        { value: 'v', label: 'Varie' },
-    ];
 
 
     return <div className="space-y-3">
         <div>
             <label className="block text-sm font-medium mb-1">Tipo</label>
             <Select
-                options={typeOptions}
+                options={AvailableRendicontoTypes}
                 value={type}
                 onChange={(e) => setType(e.target.value)}
             />
@@ -153,7 +130,7 @@ function ModifyRendicontoContent({
         <div>
             <label className="block text-sm font-medium text-gray-700">Pagamento</label>
             <Select
-                options={paymentTypeOptions}
+                options={AvailableRendicontoPaymentsTypes}
                 value={paymentType}
                 onChange={(e) => setPaymentType(e.target.value)}
             />
