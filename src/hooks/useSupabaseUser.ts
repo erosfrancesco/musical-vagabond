@@ -34,7 +34,11 @@ export function useSupabaseUser() {
     return {
         user, setUser, 
         email, setEmail, password, setPassword,
-        getSession, isLogged: !!user
+        getSession, isLogged: !!user,
+        logout: async () => {
+            await supabase.auth.signOut();
+            setUser(null);
+        }
     };
 }
 

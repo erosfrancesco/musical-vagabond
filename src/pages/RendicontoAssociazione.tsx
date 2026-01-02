@@ -45,7 +45,7 @@ export default function RendicontoAssociazione(): JSX.Element {
           + Nuovo Rendiconto
         </Button>
 
-        <Button variant="warning" onClick={() => downloadExcel(associazione, data || [])}>
+        <Button variant="secondary" onClick={() => downloadExcel(associazione, data || [])}>
           Esporta in Excel
         </Button>
       </div>

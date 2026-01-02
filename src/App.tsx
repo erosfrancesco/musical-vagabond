@@ -5,12 +5,13 @@ import RendicontoAssociazione from './pages/RendicontoAssociazione';
 import Associazioni from './pages/Associazioni';
 import useSupabaseUser from './hooks/useSupabaseUser';
 import SupabaseAuth from './components/SupabaseAuth';
+import Button from './components/Button';
 
 const queryClient = new QueryClient();
 
 
 function App(): JSX.Element {
-    const { isLogged } = useSupabaseUser();
+    const { isLogged, logout } = useSupabaseUser();
 
     if (!isLogged) {
         return (
@@ -26,6 +27,9 @@ function App(): JSX.Element {
         <QueryClientProvider client={queryClient}>
             <nav className="p-4">
                 <Link to="/" className="text-blue-600">Associazioni</Link>
+                <Button variant="warning" onClick={logout} className="ml-4">
+                    Logout
+                </Button>
             </nav>
             <Routes>
                 <Route path="/" element={<Associazioni />} />
