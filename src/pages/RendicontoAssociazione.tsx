@@ -18,7 +18,7 @@ export default function RendicontoAssociazione(): JSX.Element {
   const [isRendEditOpen, setIsRendEditOpen] = useState<boolean>(false);
   const [editingRend, setEditingRend] = useState<any | null>(null);
 
-  if (!associazione) {
+  if (!associazione || !data) {
     return <p>Associazione non trovata.</p>;
   }
 
@@ -55,7 +55,7 @@ export default function RendicontoAssociazione(): JSX.Element {
         <h2 className="text-xl font-semibold mb-4">Rendiconti</h2>
         <Table
           columns={columns}
-          data={data!}
+          data={data || []}
           actions={(row) => (
             <Button onClick={() => {
               setEditingRend(row);
