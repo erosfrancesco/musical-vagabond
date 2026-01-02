@@ -53,22 +53,18 @@ export default function RendicontoAssociazione(): JSX.Element {
 
       <div className="mt-6 w-full">
         <h2 className="text-xl font-semibold mb-4">Rendiconti</h2>
-        {data && data.length > 0 ? (
-          <Table
-            columns={columns}
-            data={data}
-            actions={(row) => (
-              <Button onClick={() => {
-                setEditingRend(row);
-                setIsRendEditOpen(true);
-              }}>
-                Edit
-              </Button>
-            )}
-          />
-        ) : (
-          <p>Nessun rendiconto disponibile.</p>
-        )}
+        <Table
+          columns={columns}
+          data={data!}
+          actions={(row) => (
+            <Button onClick={() => {
+              setEditingRend(row);
+              setIsRendEditOpen(true);
+            }}>
+              Edit
+            </Button>
+          )}
+        />
       </div>
 
       <NewRendicontoModal isOpen={isRendEditOpen} setIsOpen={setIsRendEditOpen} codice_fiscale={codice!} />
@@ -78,7 +74,7 @@ export default function RendicontoAssociazione(): JSX.Element {
 }
 
 function downloadExcel(associazione: AssociazioneParsed, data: AssociazioneRendicontoParsed[]) {
-  if (!data || data.length === 0) {
+  if (!data) {
     console.warn('No data to export');
     return;
   }

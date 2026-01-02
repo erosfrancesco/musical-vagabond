@@ -23,7 +23,7 @@ export default function Associazioni(): JSX.Element {
     return <p>Loading...</p>;
   }
 
-  if (!data || data.length === 0) {
+  if (!data) {
     return <></>;
   }
 
