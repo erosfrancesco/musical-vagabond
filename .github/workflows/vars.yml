@@ -1,6 +1,7 @@
 name: Simple Vars Example
 
-on: push
+on:
+  workflow_dispatch
 
 jobs:
   demo:
