@@ -15,6 +15,6 @@ jobs:
     steps:
       - name: Make an API request to Supabase
         run: |
-          curl -X GET ${{ env.SupabaseUrl }}/rest/v1/" \
+          curl -X GET "${{ env.SupabaseUrl }}/rest/v1/" \
           -H "apikey: ${{ env.SupabaseSecret }}" \
           -H "Authorization: Bearer ${{ env.SupabaseSecret }}"
