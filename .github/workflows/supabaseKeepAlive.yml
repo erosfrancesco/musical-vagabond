@@ -8,9 +8,13 @@ on:
 jobs:
   ping-database:
     runs-on: ubuntu-latest
+    environment: production
+    env:
+      SupabaseUrl: ${{ vars.VITE_SUPABASE_URL }}
+      SupabaseSecret: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
     steps:
       - name: Make an API request to Supabase
         run: |
           curl -X GET "https://your-supabase-url.com/rest/v1/" \
-          -H "apikey: YOUR_SUPABASE_API_KEY" \
-          -H "Authorization: Bearer YOUR_SUPABASE_API_KEY"
+          -H "apikey: ${{ env.SupabaseUrl }}" \
+          -H "Authorization: Bearer ${{ env.SupabaseSecret }}"
