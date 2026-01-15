@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     env:
-      SupabaseUrl: ${{ vars.VITE_SUPABASE_URL }}
+      SupabaseUrl: ${{ secrets.VITE_SUPABASE_URL }}
       SupabaseSecret: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
     steps:
       - name: Make an API request to Supabase
         run: |
-          curl -X GET "https://your-supabase-url.com/rest/v1/" \
-          -H "apikey: ${{ env.SupabaseUrl }}" \
+          curl -X GET ${{ env.SupabaseUrl }}/rest/v1/" \
+          -H "apikey: ${{ env.SupabaseSecret }}" \
           -H "Authorization: Bearer ${{ env.SupabaseSecret }}"
