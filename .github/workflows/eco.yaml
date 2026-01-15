@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Say Hello Variable"
-        run: echo "Greeting $SupabaseUrl" & echo "Secret greeting $SupabaseUrlSecret
+        run: echo "Greeting $SupabaseUrl" & echo "Secret greeting $SupabaseUrlSecret"
     env:
       SupabaseUrl: ${{ vars.VITE_SUPABASE_URL }}
       SupabaseUrlSecret: ${{ secrets.VITE_SUPABASE_URL }}
