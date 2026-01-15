@@ -10,4 +10,4 @@ jobs:
       Greeting: Hello
     steps:
       - name: "Say Hello Variable"
-        run: echo "$Greeting $VITE_SUPABASE_URL!"
+        run: echo "$Greeting ${{ secrets.VITE_SUPABASE_URL }}"
