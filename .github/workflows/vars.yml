@@ -1,0 +1,14 @@
+name: Simple Vars Example
+
+on: push
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show vars and secrets
+        run: |
+          echo "VAR: ${{ vars.MY_VAR }}"
+          echo "SECRET is hidden but exists"
+        env:
+          MY_SECRET: ${{ secrets.MY_SECRET }}
