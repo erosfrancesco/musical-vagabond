@@ -1,0 +1,13 @@
+name: Greeting variable
+
+on:
+  workflow_dispatch
+
+jobs:
+  greeting_job:
+    runs-on: ubuntu-latest
+    env:
+      Greeting: Hello
+    steps:
+      - name: "Say Hello Variable"
+        run: echo "$Greeting $VITE_SUPABASE_URL!"
