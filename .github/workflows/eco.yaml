@@ -7,8 +7,8 @@ jobs:
   greeting_job:
     runs-on: ubuntu-latest
     env:
-      Github: ${{ secrets.GITHUB_TOKEN }}
-      SupabaseUrl: ${{ secrets.VITE_SUPABASE_URL }}
+      SupabaseUrl: ${{ vars.VITE_SUPABASE_URL }}
+      SupabaseUrlSecret: ${{ vars.VITE_SUPABASE_URL }}
     steps:
       - name: "Say Hello Variable"
-        run: echo "Greeting $Github $SupabaseUrl"
+        run: echo "Greeting $SupabaseUrlSecret $SupabaseUrl"
