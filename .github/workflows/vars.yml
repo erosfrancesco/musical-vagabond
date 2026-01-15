@@ -1,15 +1,15 @@
-name: Simple Vars Example
+name: Simple Vars and Secrets
 
-on:
-  workflow_dispatch
+on: workflow_dispatch
 
 jobs:
   demo:
     runs-on: ubuntu-latest
     steps:
-      - name: Show vars and secrets
-        run: |
-          echo "VAR: ${{ vars.MY_VAR }}"
-          echo "SECRET is hidden but exists"
+      - name: Echo vars and secrets
         env:
+          MY_VAR: ${{ vars.MY_VAR }}
           MY_SECRET: ${{ secrets.MY_SECRET }}
+        run: |
+          echo "VAR = $MY_VAR"
+          echo "SECRET = $MY_SECRET"
