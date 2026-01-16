@@ -26,33 +26,46 @@ export enum PaymentTypesEnum {
     CONTANTE = 'Contante',
 }
 
+
+export enum RendicontoCategoriesEnum {
+    Entrata = 'Entrata',
+    Uscita = 'Uscita',
+    Varie = 'Varie',
+}
+//
+
+
+//
 export const AvailableRendicontoPaymentsTypes: { value: keyof typeof PaymentTypesEnum; label: PaymentTypesEnum }[] = [
     { value: 'ASSEGNO', label: PaymentTypesEnum.ASSEGNO },
     { value: 'CARTA', label: PaymentTypesEnum.CARTA },
     { value: 'CONTANTE', label: PaymentTypesEnum.CONTANTE },
 ];
 
-export const AvailableRendicontoTypes: { value: keyof typeof RendicontoTypesEnum; label: RendicontoTypesEnum }[] = [
-    { value: 'A', label: RendicontoTypesEnum.A },
-    { value: 'B', label: RendicontoTypesEnum.B },
-    { value: 'C', label: RendicontoTypesEnum.C },
-    { value: 'D', label: RendicontoTypesEnum.D },
-    { value: 'E', label: RendicontoTypesEnum.E },
-    { value: 'G', label: RendicontoTypesEnum.G },
-    { value: 'I', label: RendicontoTypesEnum.I },
-    { value: 'L', label: RendicontoTypesEnum.L },
-    { value: 'M', label: RendicontoTypesEnum.M },
-    { value: 'P', label: RendicontoTypesEnum.P },
-    { value: 'Q', label: RendicontoTypesEnum.Q },
-    { value: 'R', label: RendicontoTypesEnum.R },
-    { value: 'S', label: RendicontoTypesEnum.S },
-    { value: 'T', label: RendicontoTypesEnum.T },
-    { value: 'V', label: RendicontoTypesEnum.V },
-];
+export const AvailableRendicontoTypes: {
+    value: keyof typeof RendicontoTypesEnum;
+    label: RendicontoTypesEnum;
+    type: string;
+}[] = [
+        { value: 'A', label: RendicontoTypesEnum.A, type: RendicontoCategoriesEnum.Uscita },
+        { value: 'B', label: RendicontoTypesEnum.B, type: RendicontoCategoriesEnum.Uscita },
+        { value: 'C', label: RendicontoTypesEnum.C, type: RendicontoCategoriesEnum.Uscita },
+        { value: 'D', label: RendicontoTypesEnum.D, type: RendicontoCategoriesEnum.Uscita },
+        { value: 'E', label: RendicontoTypesEnum.E, type: RendicontoCategoriesEnum.Uscita },
+        { value: 'G', label: RendicontoTypesEnum.G, type: RendicontoCategoriesEnum.Uscita },
+        { value: 'I', label: RendicontoTypesEnum.I, type: RendicontoCategoriesEnum.Uscita },
+        { value: 'L', label: RendicontoTypesEnum.L, type: RendicontoCategoriesEnum.Entrata },
+        { value: 'M', label: RendicontoTypesEnum.M, type: RendicontoCategoriesEnum.Uscita },
+        { value: 'P', label: RendicontoTypesEnum.P, type: RendicontoCategoriesEnum.Uscita },
+        { value: 'Q', label: RendicontoTypesEnum.Q, type: RendicontoCategoriesEnum.Entrata },
+        { value: 'R', label: RendicontoTypesEnum.R, type: RendicontoCategoriesEnum.Uscita },
+        { value: 'S', label: RendicontoTypesEnum.S, type: RendicontoCategoriesEnum.Entrata },
+        { value: 'T', label: RendicontoTypesEnum.T, type: RendicontoCategoriesEnum.Uscita },
+        { value: 'V', label: RendicontoTypesEnum.V, type: RendicontoCategoriesEnum.Varie },
+    ];
 
 
-//
-
+// Define the structure of an AssociazioneRendiconto record
 export type AssociazioneRendiconto = {
     id: number;
     codice_fiscale: string;
@@ -65,7 +78,6 @@ export type AssociazioneRendiconto = {
 };
 
 export type AssociazioneRendicontoParsed = Pick<AssociazioneRendiconto, "id" | "codice_fiscale" | "value"> & {
-
     payment_type: keyof typeof PaymentTypesEnum;
     type: keyof typeof RendicontoTypesEnum;
 
