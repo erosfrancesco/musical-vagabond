@@ -15,7 +15,7 @@ type TableProps<T> = {
   actions?: (row: T) => React.ReactNode;
 };
 
-export default function Table<T>({ columns, data, className = '', onRowClick, actions }: TableProps<T>): JSX.Element {
+export function Table<T>({ columns, data, className = '', onRowClick, actions }: TableProps<T>): JSX.Element {
   return (
     <div className={`w-full overflow-auto bg-white rounded border ${className}`}>
       <table className="min-w-full text-sm">
@@ -59,3 +59,5 @@ export default function Table<T>({ columns, data, className = '', onRowClick, ac
     </div>
   );
 }
+
+export default Table;

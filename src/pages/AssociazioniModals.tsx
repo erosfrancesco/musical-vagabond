@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import Button from "../components/Button";
-import Input from "../components/Input";
-import Modal from "../components/Modal";
 import { Associazione, AssociazioneParsed, useNewAssociazione, useUpdateAssociazione } from "../hooks/useAssociazioni";
+import { Modal, Button, Input } from "../components/index";
 
 type ModalProps = {
     isOpen: boolean;

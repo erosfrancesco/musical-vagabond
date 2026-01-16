@@ -7,7 +7,7 @@ type ModalProps = {
     children?: React.ReactNode;
 };
 
-export default function Modal({ isOpen, onClose, title, children }: ModalProps): JSX.Element | null {
+export function Modal({ isOpen, onClose, title, children }: ModalProps): JSX.Element | null {
     useEffect(() => {
         function onKey(e: KeyboardEvent) {
             if (e.key === 'Escape') onClose();
@@ -39,3 +39,5 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps):
         </div>
     );
 }
+
+export default Modal;

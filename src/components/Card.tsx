@@ -9,7 +9,7 @@ export type CardProps = {
     className?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const Card: React.FC<CardProps> = ({ title, subtitle, actions, children, className, ...rest }) => {
+export const Card: React.FC<CardProps> = ({ title, subtitle, actions, children, className, ...rest }) => {
     return (
         <div className={clsx('text-black rounded-lg p-6 shadow-lg border border-secondary/60', className)} {...rest}>
             {title && <h3 className="text-lg text-primary font-semibold mb-1">{title}</h3>}

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import Button from "../components/Button";
-import Input from "../components/Input";
-import Modal from "../components/Modal";
-import { AssociazioneRendiconto, AssociazioneRendicontoParsed, AvailableRendicontoPaymentsTypes, AvailableRendicontoTypes, PaymentTypesEnum, RendicontoTypesEnum, useNewRendiconto, useUpdateRendiconto } from "../hooks/useRendiconto";
-import Select from "../components/Select";
+import {
+    AssociazioneRendiconto, AssociazioneRendicontoParsed, AvailableRendicontoPaymentsTypes, AvailableRendicontoTypes,
+    useNewRendiconto, useUpdateRendiconto
+} from "../hooks/useRendiconto";
 import { Associazione } from "../hooks/useAssociazioni";
+import { Button, Input, Modal, Select } from "../components/index";
 
 type ModalProps = {
     isOpen: boolean;

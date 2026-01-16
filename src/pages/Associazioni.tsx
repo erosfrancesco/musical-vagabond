@@ -1,10 +1,9 @@
-import useAssociazioni, { useNewAssociazione, useUpdateAssociazione } from '../hooks/useAssociazioni';
-import Button from '../components/Button';
+import useAssociazioni from '../hooks/useAssociazioni';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import Input from '../components/Input';
-import Modal from '../components/Modal';
-import Table, { Column } from '../components/Table';
+
+import { Button, Table, Column, Input } from '../components/index';
+
 import { EditAssociazioneModal, NewAssociazioneModal } from './AssociazioniModals';
 
 export default function Associazioni(): JSX.Element {
