@@ -1,0 +1,14 @@
+name: Greeting variable
+
+on:
+  workflow_dispatch
+
+jobs:
+  greeting_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Say Hello Variable"
+        run: echo "Greeting ${{ env.SupabaseUrl }}" & echo "Secret greeting ${{ env.SupabaseUrlSecret }}"
+    env:
+      SupabaseUrl: ${{ vars.VITE_SUPABASE_URL }}
+      SupabaseUrlSecret: ${{ secrets.VITE_SUPABASE_URL }}
